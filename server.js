@@ -23,7 +23,8 @@ http
 
     //checking request path and handling
     if (q.pathname.includes('documentation')) {
-      filePath = `${__dirname}'/documentation.html`;
+      filePath = `${__dirname}/documentation.html`;
+      console.log(filePath);
     } else {
       filePath = 'index.html';
     }
