@@ -83,8 +83,8 @@ app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
-app.get('/documentation', (res, req) => {
-  res.sendFile('documentation.html');
+app.get('/documentation', (req, res) => {
+  res.sendFile(__dirname + '/public/documentation.html');
 });
 
 app.listen(8080, () => {
