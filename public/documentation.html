@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+    />
+    <link href="css/styles.css" type="text/css" rel="stylesheet" />
   </head>
   <body>
     <section>
@@ -17,6 +23,60 @@
         You will be able to sign up, update your personal information and make a
         list of your favorite movies.
       </p>
+
+      <h2>endpoints and descriptions</h2>
+      <br />
+      <table>
+        <thead>
+          <tr>
+            <th>Method</th>
+            <th>EndPoint</th>
+            <th>Response</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>GET</td>
+            <td>/movies</td>
+            <td>JSON of all movies</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/movies/[title]</td>
+            <td>JSON containing details about movie by title</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/movies/genres/[title]</td>
+            <td>Details about Genre of movie by title</td>
+          </tr>
+          <tr>
+            <td>GET</td>
+            <td>/directors/[name]</td>
+            <td>Details about director by name</td>
+          </tr>
+          <tr>
+            <td>POST</td>
+            <td>/users</td>
+            <td>Allows user to register</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/users/[name]</td>
+            <td>Allows user to update their information</td>
+          </tr>
+          <tr>
+            <td>PUT</td>
+            <td>/favorites/[id]/[title]</td>
+            <td>Allows user to add movie to their list of favorites</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/[name]</td>
+            <td>Allows user to delete account</td>
+          </tr>
+        </tbody>
+      </table>
     </section>
   </body>
 </html>
