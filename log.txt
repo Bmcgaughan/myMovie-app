@@ -39,3 +39,7 @@
 ::1 - - [16/Apr/2022:00:34:29 +0000] "GET /users/4/favorites/Schitts%20Creek HTTP/1.1" 404 172 "-" "PostmanRuntime/7.29.0"
 ::1 - - [16/Apr/2022:00:35:11 +0000] "POST /users/4/favorites/Schitts%20Creek HTTP/1.1" 200 47 "-" "PostmanRuntime/7.29.0"
 ::1 - - [16/Apr/2022:00:36:26 +0000] "DELETE /users/Brian%20McGaughan HTTP/1.1" 200 29 "-" "PostmanRuntime/7.29.0"
+::1 - - [16/Apr/2022:00:39:44 +0000] "GET /users/Brian%20McGaughan HTTP/1.1" 404 162 "-" "PostmanRuntime/7.29.0"
+::1 - - [16/Apr/2022:00:39:47 +0000] "PUT /users/Brian%20McGaughan HTTP/1.1" 200 50 "-" "PostmanRuntime/7.29.0"
+::1 - - [16/Apr/2022:00:43:05 +0000] "DELETE /users/4/favorites/Schitts%20Creek HTTP/1.1" 404 175 "-" "PostmanRuntime/7.29.0"
+::1 - - [16/Apr/2022:00:43:34 +0000] "DELETE /users/4/favorites/Schitts%20Creek HTTP/1.1" 200 52 "-" "PostmanRuntime/7.29.0"

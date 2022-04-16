@@ -131,6 +131,14 @@ app.post('/users/:id/favorites/:title', (req, res) => {
     );
 });
 
+app.delete('/users/:id/favorites/:title', (req, res) => {
+  res
+    .status(200)
+    .send(
+      `Deleteing ${req.params.title} from favorites for user ID ${req.params.id}`
+    );
+});
+
 app.delete('/users/:name', (req, res) => {
   res.status(200).send(`Deleting user ${req.params.name}`);
 });
