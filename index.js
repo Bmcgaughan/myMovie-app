@@ -92,7 +92,7 @@ app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
-app.get('movies/:title', (req, res) => {
+app.get('/movies/:title', (req, res) => {
   res.json(
     topMovies.find((movie) => {
       return movie.title === req.params.title;
@@ -100,7 +100,7 @@ app.get('movies/:title', (req, res) => {
   );
 });
 
-app.get('movies/genre/:title', (req, res) => {
+app.get('/movies/genre/:title', (req, res) => {
   let movie = topMovies.find((movie) => {
     return movie.title === req.params.title;
   });
@@ -115,7 +115,7 @@ app.get('/directors/:name', (req, res) => {
   res.status(200).send(`Request recived for ${req.params.name}`);
 });
 
-app.post('/user', (req, res) => {
+app.post('/users', (req, res) => {
   res.status(200).send(`Request recived for new user`);
 });
 
@@ -123,10 +123,12 @@ app.put('/users/:name', (req, res) => {
   res.status(200).send(`Request recived to update name for ${req.params.name}`);
 });
 
-app.put('/favorites/:id/:title', (req, res) => {
+app.post('/users/:id/favorites/:title', (req, res) => {
   res
     .status(200)
-    .send(`Adding ${req.params.title} to favorites for ${req.params.name}`);
+    .send(
+      `Adding ${req.params.title} to favorites for user ID ${req.params.id}`
+    );
 });
 
 app.delete('/users/:name', (req, res) => {
