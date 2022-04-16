@@ -23,7 +23,7 @@ const topMovies = [
     title: 'The Godfather',
     director: 'Frances Ford Coppola',
     stars: ['Marlon Brando', 'Al Pacino', 'James Caan'],
-    genre: 'Crime',
+    genre: 'Crime Drama',
   },
   {
     title: 'The Dark Knight',
@@ -35,7 +35,7 @@ const topMovies = [
     title: 'The Godfather: Part II',
     director: 'Francis Ford Coppola',
     stars: ['Al Pacino', 'Robert De Niro', 'Robert Duvall'],
-    genre: 'Crime',
+    genre: 'Crime Drama',
   },
   {
     title: '12 Angry Men',
@@ -47,7 +47,7 @@ const topMovies = [
     title: "Schindler's List",
     director: 'Steven Spielberg',
     stars: ['Liam Neeson', 'Ralph Fiennes', 'Ben Kingsley'],
-    genre: 'History',
+    genre: 'Historical Drama',
   },
   {
     title: 'The Lord of the Rings: The Return of the King',
@@ -59,7 +59,7 @@ const topMovies = [
     title: 'Pulp Fiction',
     director: 'Quentin Tarantino',
     stars: ['John Travolta', 'Uma Thurman', 'Samuel L. Jackson'],
-    genre: 'Crime',
+    genre: 'Crime Drama',
   },
   {
     title: 'The Lord of the Rings: The Fellowship of the Ring',
@@ -93,11 +93,14 @@ app.get('/movies', (req, res) => {
 });
 
 app.get('/movies/:title', (req, res) => {
-  res.json(
-    topMovies.find((movie) => {
-      return movie.title === req.params.title;
-    })
-  );
+  let movie = topMovies.find((movie) => {
+    return movie.title === req.params.title;
+  });
+  if (movie) {
+    res.json(movie);
+  } else {
+    res.status(400).send('Movie not Found');
+  }
 });
 
 app.get('/movies/genre/:title', (req, res) => {

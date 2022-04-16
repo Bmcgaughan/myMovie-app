@@ -11,3 +11,4 @@
 .history/
 
 node_modules/*
+log.txt
