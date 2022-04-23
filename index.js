@@ -10,71 +10,6 @@ const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
   flags: 'a',
 });
 
-//top 10 movies according to IMDB
-const topMovies = [
-  {
-    title: 'The Shawshank Redemption',
-    director: 'Frank Darabont',
-    stars: ['Tim Robbins', 'Morgan Freeman', 'Bob Gunton'],
-    genre: 'Drama',
-  },
-
-  {
-    title: 'The Godfather',
-    director: 'Frances Ford Coppola',
-    stars: ['Marlon Brando', 'Al Pacino', 'James Caan'],
-    genre: 'Crime Drama',
-  },
-  {
-    title: 'The Dark Knight',
-    director: 'Christopher Nolan',
-    stars: ['Christian Bale', 'Heath Ledger', 'Aaron Eckhart'],
-    genre: 'Action',
-  },
-  {
-    title: 'The Godfather: Part II',
-    director: 'Francis Ford Coppola',
-    stars: ['Al Pacino', 'Robert De Niro', 'Robert Duvall'],
-    genre: 'Crime Drama',
-  },
-  {
-    title: '12 Angry Men',
-    director: 'Sidney Lumet',
-    stars: ['Henry Fonda', 'Lee J. Cobb', 'Martin Balsam'],
-    genre: 'Drama',
-  },
-  {
-    title: "Schindler's List",
-    director: 'Steven Spielberg',
-    stars: ['Liam Neeson', 'Ralph Fiennes', 'Ben Kingsley'],
-    genre: 'Historical Drama',
-  },
-  {
-    title: 'The Lord of the Rings: The Return of the King',
-    director: 'Peter Jackson',
-    stars: ['Elijah Wood', 'Viggo Mortensen', 'Ian McKellen'],
-    genre: 'Fantasy',
-  },
-  {
-    title: 'Pulp Fiction',
-    director: 'Quentin Tarantino',
-    stars: ['John Travolta', 'Uma Thurman', 'Samuel L. Jackson'],
-    genre: 'Crime Drama',
-  },
-  {
-    title: 'The Lord of the Rings: The Fellowship of the Ring',
-    director: 'Peter Jackson',
-    stars: ['Elijah Wood', 'Orlando Bloom', 'Ian McKellen'],
-    genre: 'Fantasy',
-  },
-  {
-    title: 'The Good, the Bad and the Ugly',
-    director: 'Sergio Leone',
-    stars: ['Clint Eastwood', 'Eli Wallach', 'Lee Van Cleef'],
-    genre: 'Western',
-  },
-];
-
 //middleware - logging, static public folder, error logging
 app.use(morgan('combined', { stream: accessLogStream }));
 app.use(express.static('public'));
@@ -92,6 +27,7 @@ app.get('/movies', (req, res) => {
   res.json(topMovies);
 });
 
+//movie by title
 app.get('/movies/:title', (req, res) => {
   let movie = topMovies.find((movie) => {
     return movie.title === req.params.title;
@@ -103,6 +39,7 @@ app.get('/movies/:title', (req, res) => {
   }
 });
 
+//movies by genre
 app.get('/movies/genre/:title', (req, res) => {
   let movie = topMovies.find((movie) => {
     return movie.title === req.params.title;
