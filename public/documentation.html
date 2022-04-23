@@ -39,13 +39,22 @@
             <td>GET</td>
             <td>/movies</td>
             <td>
-              JSON Object with a list of all top movies
+              Returns JSON Object with a list of all top movies
               <pre>
       {
-        title: string,
-        director: string,
-        stars: array,
-        genre: string,
+        Title: String,
+        Director: String,
+        Stars: [String],
+        Genre: {
+          Name: String,
+          Description: String
+        },
+        Director: {
+          Name: String,
+          Bio: String
+        }
+        Featured: Boolean,
+        ImageUrl: String
       }
               </pre>
             </td>
@@ -57,10 +66,19 @@
               JSON containing details about movie by title
               <pre>
       {
-        title: 'The Shawshank Redemption',
-        director: 'Frank Darabont',
-        stars: ['Tim Robbins', 'Morgan Freeman', 'Bob Gunton'],
-        genre: 'Drama',
+        Title: String,
+        Director: String,
+        Stars: [String],
+        Genre: {
+          Name: String,
+          Description: String
+        },
+        Director: {
+          Name: String,
+          Bio: String
+        }
+        Featured: Boolean,
+        ImageUrl: String
       }
               </pre>
             </td>
@@ -77,7 +95,8 @@
               Details about director by name
               <pre>
       {
-        director: 'Frank Darabont'
+        Name: String
+        Bio: String
       }
               </pre>
             </td>
@@ -85,21 +104,51 @@
           <tr>
             <td>POST</td>
             <td>/users</td>
-            <td>Allows user to register</td>
+            <td>
+              Allows user to register
+              <pre>
+      {
+        Username: String,
+        (required)
+        Password: String,
+        (required)
+        Email: String,
+        (required)
+        Birthday: Date
+      }
+              </pre>
+            </td>
           </tr>
           <tr>
             <td>PUT</td>
             <td>/users/[name]</td>
-            <td>Allows user to update their information</td>
+            <td>
+              Allows user to update their information - will update information
+              in JSON.
+              <pre>
+      {
+        Username: String,
+        (required)
+        Password: String,
+        Email: String,
+        Birthday: Date
+      }
+              </pre>
+            </td>
           </tr>
           <tr>
             <td>PUT</td>
-            <td>/favorites/[id]/[title]</td>
+            <td>/favorites/[username]/[movieID]</td>
             <td>Allows user to add movie to their list of favorites</td>
           </tr>
           <tr>
             <td>DELETE</td>
-            <td>/users/[name]</td>
+            <td>/favorites/[username]/[movieID]</td>
+            <td>Allows user to remove movie from their list of favorites</td>
+          </tr>
+          <tr>
+            <td>DELETE</td>
+            <td>/users/[username]</td>
             <td>Allows user to delete account</td>
           </tr>
         </tbody>

@@ -129,26 +129,60 @@ app.put('/users/:Username', (req, res) => {
 });
 
 //add favorite movie to user
-app.post('/users/:id/favorites/:title', (req, res) => {
-  res
-    .status(200)
-    .send(
-      `Adding ${req.params.title} to favorites for user ID ${req.params.id}`
-    );
+app.post('/users/:Username/favorites/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $push: {
+        FavoriteMovies: req.params.MovieID,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(`Error: ${err}`);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
 //delete favorite from user
-app.delete('/users/:id/favorites/:title', (req, res) => {
-  res
-    .status(200)
-    .send(
-      `Deleteing ${req.params.title} from favorites for user ID ${req.params.id}`
-    );
+app.delete('/users/:Username/favorites/:MovieID', (req, res) => {
+  Users.findOneAndUpdate(
+    { Username: req.params.Username },
+    {
+      $pull: {
+        FavoriteMovies: req.params.MovieID,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(`Error: ${err}`);
+      } else {
+        res.json(updatedUser);
+      }
+    }
+  );
 });
 
 //delete user
-app.delete('/users/:name', (req, res) => {
-  res.status(200).send(`Deleting user ${req.params.name}`);
+app.delete('/users/:Username', (req, res) => {
+  Users.findOneAndRemove({Username: req.params.Username})
+  .then((user) =>{
+    if (!user) {
+      return res.status(400).send(`${req.params.Username} does not exist`);
+    } else {
+      res.status(200).send(`${req.params.Username} was deleted`)
+    }
+  }).catch((err) =>{
+    console.log(err);
+        res.status(500).send(`Error: ${err}`);
+  })
 });
 
 app.get('/documentation', (req, res) => {
