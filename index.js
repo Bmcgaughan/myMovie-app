@@ -5,11 +5,15 @@ const express = require('express'),
   mongoose = require('mongoose'),
   Models = require('./models.js');
 
+const app = express();
+
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
+
 //mongoose models
 const Movies = Models.Movie;
 const Users = Models.User;
-
-const app = express();
 
 //connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
@@ -41,14 +45,23 @@ app.get('/', (req, res) => {
   res.send('Welcome to the App!');
 });
 
-app.get('/movies', (req, res) => {
-  Movies.find().then((movies) => {
-    res.status(200).json(movies);
-  });
-});
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.find()
+      .then((movies) => {
+        res.status(201).json(movies);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(`Error: ${error}`);
+      });
+  }
+);
 
 //movie by title
-app.get('/movies/:title', (req, res) => {
+app.get('/movies/:title',passport.authenticate('jwt', { session: false }), (req, res) => {
   Movies.findOne({ Title: req.params.title }).then((movie) => {
     if (movie) {
       res.status(200).json(movie);
