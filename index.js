@@ -4,12 +4,28 @@ const express = require('express'),
   path = require('path'),
   mongoose = require('mongoose'),
   Models = require('./models.js');
+  
 
 const app = express();
 
+//setting allowed request origins
+const cors = require('cors');
+const allowedOrigins = ['http://localhost:8080'];
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let message = `No access from this origin ${origin}`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
+
 let auth = require('./auth')(app);
-
-
 const passport = require('passport');
 
 require('./passport');
@@ -23,10 +39,6 @@ mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-// Movies.find({ Title: 'Pulp Fiction' }).then((movie) => {
-//   console.log(movie);
-// });
 
 //setting up logging stream
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {
@@ -105,7 +117,6 @@ app.get(
         res.status(400).send('Director Not Found');
       }
     });
-    // res.status(200).send(`Request recived for ${req.params.name}`);
   }
 );
 
