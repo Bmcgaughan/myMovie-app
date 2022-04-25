@@ -4,7 +4,6 @@ const express = require('express'),
   path = require('path'),
   mongoose = require('mongoose'),
   Models = require('./models.js');
-  
 
 const app = express();
 
@@ -125,13 +124,14 @@ app.post(
   '/users',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ Username: req.body.Username }).then((user) => {
       if (user) {
         return res.status(400).send(`${req.body.Username} already exists`);
       } else {
         Users.create({
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         })
