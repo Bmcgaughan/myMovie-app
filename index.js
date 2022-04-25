@@ -133,7 +133,7 @@ app.post('/users/:Username/favorites/:MovieID', (req, res) => {
   Users.findOneAndUpdate(
     { Username: req.params.Username },
     {
-      $push: {
+      $addToSet: {
         FavoriteMovies: req.params.MovieID,
       },
     },
@@ -172,17 +172,18 @@ app.delete('/users/:Username/favorites/:MovieID', (req, res) => {
 
 //delete user
 app.delete('/users/:Username', (req, res) => {
-  Users.findOneAndRemove({Username: req.params.Username})
-  .then((user) =>{
-    if (!user) {
-      return res.status(400).send(`${req.params.Username} does not exist`);
-    } else {
-      res.status(200).send(`${req.params.Username} was deleted`)
-    }
-  }).catch((err) =>{
-    console.log(err);
-        res.status(500).send(`Error: ${err}`);
-  })
+  Users.findOneAndRemove({ Username: req.params.Username })
+    .then((user) => {
+      if (!user) {
+        return res.status(400).send(`${req.params.Username} does not exist`);
+      } else {
+        res.status(200).send(`${req.params.Username} was deleted`);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(`Error: ${err}`);
+    });
 });
 
 app.get('/documentation', (req, res) => {
