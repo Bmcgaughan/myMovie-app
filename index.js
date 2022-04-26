@@ -126,13 +126,21 @@ app.post(
   '/users',
   //validating inputs
   [
-    check('Username', 'Username must be more than 5 characters').isLength({ min: 5 }),
+    check('Username', 'Username must be more than 5 characters').isLength(
+      {
+        min: 5,
+      }
+        .trim()
+        .escape()
+    ),
     check(
       'Username',
       'Username cant contain non alpha-numeric characters'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email address is not valid').isEmail(),
+    check('Email', 'Email address is not valid')
+      .isEmail()
+      .normalizeEmail({ gmail_remove_dots: false }),
   ],
   (req, res) => {
     let validationErrors = validationResult(req);
