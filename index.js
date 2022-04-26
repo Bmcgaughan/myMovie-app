@@ -35,8 +35,14 @@ require('./passport');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
+//connect to local dev MongoDB
+// mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
+
+//connect to Mongo Atlas
+mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
