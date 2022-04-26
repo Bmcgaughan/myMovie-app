@@ -126,13 +126,12 @@ app.post(
   '/users',
   //validating inputs
   [
-    check('Username', 'Username must be more than 5 characters').isLength(
-      {
+    check('Username', 'Username must be more than 5 characters')
+      .isLength({
         min: 5,
-      }
-        .trim()
-        .escape()
-    ),
+      })
+      .trim()
+      .escape(),
     check(
       'Username',
       'Username cant contain non alpha-numeric characters'
@@ -274,6 +273,7 @@ app.get('/documentation', (req, res) => {
   res.sendFile(__dirname + '/public/documentation.html');
 });
 
-app.listen(8080, () => {
-  console.log('listening on port 8080');
+const port = process.env.PORT || 8080;
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Listening on ${port}`);
 });
