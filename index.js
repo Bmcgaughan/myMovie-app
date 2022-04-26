@@ -144,7 +144,7 @@ app.post(
       'Username cant contain non alpha-numeric characters'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email address is not valid').isEmail(),
+    check('Email', 'Email address is not valid').isEmail()
   ],
   (req, res) => {
     let validationErrors = validationResult(req);
@@ -191,7 +191,7 @@ app.put(
       'Username cant contain non alpha-numeric characters'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email address is not valid').isEmail(),
+    check('Email', 'Email address is not valid').isEmail()
   ],
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
