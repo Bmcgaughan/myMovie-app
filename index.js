@@ -200,12 +200,16 @@ app.put(
     if (!validationErrors.isEmpty()) {
       return res.status(422).json({ errors: validationErrors.array() });
     }
+
+    let hashedPassword = req.body.Password ? Users.hashPassword(req.body.Password) : null;
+    //if submitting password update it gets hashed
+
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
         $set: {
           Username: req.body.Username,
-          Password: req.body.Password,
+          Password: hashedPassword,
           Email: req.body.Email,
           Birthday: req.body.Birthday,
         },
