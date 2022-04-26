@@ -7,14 +7,18 @@ Creating a backend API to store information about movies and allow users to crea
 
 ### Dependencies
 - Node.JS
-- Express
-- Passport
-- Mongoose
-- CORS
-- Bcrypt
-- Morgan
-- UUID
-- JSON Web Token
+- express
+- express-validator
+- passport
+- passport-jwt
+- passport-local
+- body-parser
+- mongoose
+- cors
+- bcrypt
+- morgan
+- lodash
+
 
 ### Executing program
 For a list of endpoints and responses check out the documentation.html
