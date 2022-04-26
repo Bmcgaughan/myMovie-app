@@ -5,6 +5,8 @@ const express = require('express'),
   mongoose = require('mongoose'),
   Models = require('./models.js');
 
+const { check, validationResult } = require('express-validator');
+
 const app = express();
 
 //setting allowed request origins
@@ -122,8 +124,23 @@ app.get(
 //add user
 app.post(
   '/users',
-  passport.authenticate('jwt', { session: false }),
+  //validating inputs
+  [
+    check('Username', 'Username must be more than 5 characters').isLength({ min: 5 }),
+    check(
+      'Username',
+      'Username cant contain non alpha-numeric characters'
+    ).isAlphanumeric(),
+    check('Password', 'Password is required').not().isEmpty(),
+    check('Email', 'Email address is not valid').isEmail(),
+  ],
   (req, res) => {
+    let validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(422).json({ errors: validationErrors.array() });
+    }
+
     let hashedPassword = Users.hashPassword(req.body.Password);
     Users.findOne({ Username: req.body.Username }).then((user) => {
       if (user) {
