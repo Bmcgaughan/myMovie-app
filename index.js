@@ -309,7 +309,7 @@ app.get('/omdb/:title', (req, res) => {
   const title = req.body.title;
 
   axios
-    .get(`http://www.omdbapi.com/?${process.env.OMDB_API}=&${title}`)
+    .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API}`)
     .then((response) => {
       console.log(response.data);
     })
