@@ -11,21 +11,20 @@ const app = express();
 
 //setting allowed request origins
 const cors = require('cors');
-const allowedOrigins = ['http://localhost:8080'];
+const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234/'];
 
-//commented out to allow all requests
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         let message = `No access from this origin ${origin}`;
-//         return callback(new Error(message), false);
-//       }
-//       return callback(null, true);
-//     },
-//   })
-// );
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let message = `No access from this origin ${origin}`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 let auth = require('./auth')(app);
 const passport = require('passport');
@@ -67,7 +66,6 @@ app.use((err, req, res, next) => {
 app.get('/', (req, res) => {
   res.send('Welcome to the App!');
 });
-
 
 //return json of all movies
 app.get(
@@ -203,7 +201,9 @@ app.put(
       return res.status(422).json({ errors: validationErrors.array() });
     }
 
-    let hashedPassword = req.body.Password ? Users.hashPassword(req.body.Password) : null;
+    let hashedPassword = req.body.Password
+      ? Users.hashPassword(req.body.Password)
+      : null;
     //if submitting password update it gets hashed
 
     Users.findOneAndUpdate(
