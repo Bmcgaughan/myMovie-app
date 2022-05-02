@@ -312,7 +312,7 @@ app.get('/omdb/:title', (req, res) => {
   axios
     .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API}`)
     .then((response) => {
-      res.json(response);
+      res.json(response.data);
     })
     .catch((error) => {
       res.status(500).send(`error: ${error}`);
