@@ -38,13 +38,13 @@ require('./passport');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-//connect to local dev MongoDB
+// connect to local dev MongoDB
 // mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
 // });
 
-//connect to Mongo Atlas
+// connect to Mongo Atlas
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -306,16 +306,16 @@ app.get('/documentation', (req, res) => {
   res.sendFile(__dirname + '/public/documentation.html');
 });
 
+//asking external API for data if it is not stored. Request by title and returns json object
 app.get('/omdb/:title', (req, res) => {
-  const title = req.body.title;
-
+  const title = req.params.title;
   axios
     .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API}`)
     .then((response) => {
-      console.log(response.data);
+      res.json(response);
     })
     .catch((error) => {
-      console.log(error);
+      res.status(500).send(`error: ${error}`);
     });
 });
 
