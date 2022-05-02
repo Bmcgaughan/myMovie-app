@@ -305,6 +305,19 @@ app.get('/documentation', (req, res) => {
   res.sendFile(__dirname + '/public/documentation.html');
 });
 
+app.get('/omdb/:title', (req, res) => {
+  const title = req.body.title;
+
+  axios
+    .get(`http://www.omdbapi.com/?${process.env.OMDB_API}=&${title}`)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
 const port = process.env.PORT || 8080;
 app.listen(port, '0.0.0.0', () => {
   console.log(`Listening on ${port}`);
