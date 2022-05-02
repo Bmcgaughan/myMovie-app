@@ -11,20 +11,22 @@ const app = express();
 
 //setting allowed request origins
 const cors = require('cors');
-const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234/'];
+app.use(cors());
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        let message = `No access from this origin ${origin}`;
-        return callback(new Error(message), false);
-      }
-      return callback(null, true);
-    },
-  })
-);
+// const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234/'];
+
+// app.use(
+//   cors({
+//     origin: (origin, callback) => {
+//       if (!origin) return callback(null, true);
+//       if (allowedOrigins.indexOf(origin) === -1) {
+//         let message = `No access from this origin ${origin}`;
+//         return callback(new Error(message), false);
+//       }
+//       return callback(null, true);
+//     },
+//   })
+// );
 
 let auth = require('./auth')(app);
 const passport = require('passport');
