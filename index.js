@@ -29,7 +29,6 @@ app.use(cors());
 //   })
 // );
 
-let auth = require('./auth')(app);
 const passport = require('passport');
 
 require('./passport');
@@ -64,6 +63,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('something is broken here');
 });
+
+//passing express app into Auth
+let auth = require('./auth')(app);
 
 //setting endpoints for API
 app.get('/', (req, res) => {
