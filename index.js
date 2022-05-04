@@ -15,7 +15,6 @@ const cors = require('cors');
 app.use(cors());
 
 const allowedOrigins = process.env.ALLOWED_ORIGIN.split(',')
-console.log(allowedOrigins);
 
 app.use(
   cors({
@@ -25,6 +24,7 @@ app.use(
         let message = `No access from this origin ${origin}`;
         return callback(new Error(message), false);
       }
+      console.log(`allowed ${allowedOrigins, origin}`);
       return callback(null, true);
     },
   })
