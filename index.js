@@ -14,20 +14,21 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
-// const allowedOrigins = ['http://localhost:8080', 'http://localhost:1234/'];
+const allowedOrigins = process.env.ALLOWED_ORIGIN.split(',')
+console.log(allowedOrigins);
 
-// app.use(
-//   cors({
-//     origin: (origin, callback) => {
-//       if (!origin) return callback(null, true);
-//       if (allowedOrigins.indexOf(origin) === -1) {
-//         let message = `No access from this origin ${origin}`;
-//         return callback(new Error(message), false);
-//       }
-//       return callback(null, true);
-//     },
-//   })
-// );
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        let message = `No access from this origin ${origin}`;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 const passport = require('passport');
 
