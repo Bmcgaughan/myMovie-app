@@ -237,7 +237,7 @@ app.put(
 
 //getting and returning JSON for specific user by Username
 app.get(
-  '/users:Username',
+  '/users/:Username',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Users.findOne({ Username: req.body.Username })
