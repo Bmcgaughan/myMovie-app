@@ -243,7 +243,13 @@ app.get(
     Users.findOne({ Username: req.body.Username })
       .then((user) => {
         if (user) {
-          res.status(201).json(user);
+          respData = {
+            Username: user.Username,
+            Email: user.Email,
+            Birthday: user.Birthday,
+            FavoriteMovies: user.FavoriteMovies,
+          };
+          res.status(201).json(respData);
         } else {
           res.status(400).send('User Not Found');
         }
