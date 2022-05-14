@@ -14,7 +14,7 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
-const allowedOrigins = process.env.ALLOWED_ORIGIN.split(',')
+const allowedOrigins = process.env.ALLOWED_ORIGIN.split(',');
 
 app.use(
   cors({
@@ -24,7 +24,7 @@ app.use(
         let message = `No access from this origin ${origin}`;
         return callback(new Error(message), false);
       }
-      console.log(`allowed ${allowedOrigins, origin}`);
+      console.log(`allowed ${(allowedOrigins, origin)}`);
       return callback(null, true);
     },
   })
@@ -232,6 +232,26 @@ app.put(
         }
       }
     );
+  }
+);
+
+//getting and returning JSON for specific user by Username
+app.get(
+  '/users:Username',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Users.findOne({ Username: req.body.Username })
+      .then((user) => {
+        if (user) {
+          res.status(201).json(user);
+        } else {
+          res.status(400).send('User Not Found');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        res.status(500).send(`Error: ${error}`);
+      });
   }
 );
 
