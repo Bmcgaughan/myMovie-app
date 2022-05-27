@@ -336,10 +336,10 @@ app.get('/documentation', (req, res) => {
 });
 
 //asking external API for data if it is not stored. Request by title and returns json object
-app.get('/omdb/:title', (req, res) => {
+app.get('/movies/trending', (req, res) => {
   const title = req.params.title;
   axios
-    .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.OMDB_API}`)
+    .get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB}&append_to_response=week`)
     .then((response) => {
       res.json(response.data);
     })
