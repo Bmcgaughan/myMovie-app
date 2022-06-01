@@ -77,7 +77,7 @@ async function showExistDriver(shows) {
 }
 
 //process array of results into Movies model for insertion into Mongo
-async function processTrend(data, existing) {
+async function processTrend(data, existing, trend) {
   let showsToAdd = [];
   const baseURL = 'http://image.tmdb.org/t/p/original';
   if (data) {
@@ -87,11 +87,15 @@ async function processTrend(data, existing) {
       newTV.Title = show.name;
       newTV.Description = show.overview ? show.overview : 'N/A';
       newTV.odbID = show.id;
-      newTV.Trending = true;
+      newTV.Trending = trend ? true : false;
       newTV.ImagePath = baseURL + show.poster_path;
       newTV.Popularity = show.popularity ? show.popularity : null;
       newTV.Rating = show.vote_average ? show.vote_average : null;
       newTV.Network = show.networks[0].name ? show.networks[0].name : null;
+
+      if (show.genres) {
+        newTV.Genre.Name = show.genres[0] ? show.genres[0].name : '';
+      }
 
       if (show.credits.cast) {
         let splice =
@@ -202,7 +206,7 @@ module.exports = (router) => {
                     return newTVDetails;
                   })
                   .then((rawDetails) => {
-                    processTrend(rawDetails, idsToQuery.existing).then(
+                    processTrend(rawDetails, idsToQuery.existing, true).then(
                       (processedTV) => {
                         res.status(200).send(processedTV);
                       }
@@ -253,7 +257,7 @@ module.exports = (router) => {
                     return newTVDetails;
                   })
                   .then((rawDetails) => {
-                    processTrend(rawDetails, null).then((processedTV) => {
+                    processTrend(rawDetails, null, null).then((processedTV) => {
                       console.log(processedTV);
                     });
                   })
