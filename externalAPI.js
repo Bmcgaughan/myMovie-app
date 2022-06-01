@@ -158,7 +158,7 @@ async function getDetails(data) {
   data.forEach((id) => {
     userRequests.push(
       getData(
-        `https://api.themoviedb.org/3/tv/${id}?api_key=${process.envTMDB}&language=en-US&append_to_response=credits`
+        `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.TMDB}&language=en-US&append_to_response=credits`
       )
     );
   });
@@ -167,14 +167,14 @@ async function getDetails(data) {
 
 async function getTrending() {
   const resp = axios.get(
-    `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.envTMDB}`
+    `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB}`
   );
   return resp;
 }
 
 async function getRecommended(id) {
   const resp = axios.get(
-    `https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${process.envTMDB}&language=en-US&page=1&append_to_response=credits`
+    `https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${process.env.TMDB}&language=en-US&page=1&append_to_response=credits`
   );
   return resp;
 }
