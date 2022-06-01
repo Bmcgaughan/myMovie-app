@@ -5,7 +5,8 @@ const jwt = require('jsonwebtoken'),
   passport = require('passport'),
   axios = require('axios'),
   Models = require('./models.js'),
-  async = require('async');
+  async = require('async'),
+  schedule = require('node-schedule');
 
 require('./passport');
 
@@ -182,6 +183,56 @@ async function getRecommended(id) {
   );
   return resp;
 }
+
+const trendJob = schedule.scheduleJob({ minute: 01 }, function () {
+  try {
+    getTrending()
+      .then((response) => {
+        return response.data.results;
+      })
+      .then((fullRes) => {
+        showExistDriver(fullRes)
+          .then((existSplit) => {
+            // res.locals.ids = {
+            //   ...existSplit.existing,
+            //   ...existSplit.newShow,
+            // };
+            return existSplit;
+          })
+          .then((idsToQuery) => {
+            getDetails(idsToQuery.newShow)
+              .then((newTVDetails) => {
+                clearTrend();
+                return newTVDetails;
+              })
+              .then((rawDetails) => {
+                processTrend(rawDetails, idsToQuery.existing, true).then(
+                  (processedTV) => {
+                    // res.status(200).send(res.locals.ids);
+                    console.log(processedTV);
+                  }
+                );
+              })
+              .catch((e) => {
+                console.log(e);
+
+                // res.status(500).send(`Error: ${e}`);
+              });
+          })
+          .catch((e) => {
+            console.log('get details error', e);
+            // res.status(500).send(`Error: ${e}`);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+        // res.status(500).send(`Error: ${e}`);
+      });
+  } catch (err) {
+    console.log('error:', err);
+    // res.status(500).send(`Error: ${err}`);
+  }
+});
 
 //route to get trending shows for the week and process
 module.exports = (router) => {
