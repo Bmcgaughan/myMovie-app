@@ -193,10 +193,6 @@ const trendJob = schedule.scheduleJob('0 */6 * * *', function () {
       .then((fullRes) => {
         showExistDriver(fullRes)
           .then((existSplit) => {
-            // res.locals.ids = {
-            //   ...existSplit.existing,
-            //   ...existSplit.newShow,
-            // };
             return existSplit;
           })
           .then((idsToQuery) => {
@@ -208,25 +204,20 @@ const trendJob = schedule.scheduleJob('0 */6 * * *', function () {
               .then((rawDetails) => {
                 processTrend(rawDetails, idsToQuery.existing, true).then(
                   (processedTV) => {
-                    // res.status(200).send(res.locals.ids);
                     console.log(processedTV);
                   }
                 );
               })
               .catch((e) => {
                 console.log(e);
-
-                // res.status(500).send(`Error: ${e}`);
               });
           })
           .catch((e) => {
             console.log('get details error', e);
-            // res.status(500).send(`Error: ${e}`);
           });
       })
       .catch((e) => {
         console.log(e);
-        // res.status(500).send(`Error: ${e}`);
       });
   } catch (err) {
     console.log('error:', err);
