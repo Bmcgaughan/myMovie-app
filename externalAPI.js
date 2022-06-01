@@ -184,7 +184,7 @@ async function getRecommended(id) {
   return resp;
 }
 
-const trendJob = schedule.scheduleJob({ minute: 01 }, function () {
+const trendJob = schedule.scheduleJob('*/10 * * * * *', function () {
   try {
     getTrending()
       .then((response) => {
