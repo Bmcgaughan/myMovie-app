@@ -233,9 +233,7 @@ module.exports = (router) => {
       }
     }
   );
-};
 
-module.exports = (router) => {
   router.get(
     '/movies/recommended/:id',
     passport.authenticate('jwt', { session: false }),
