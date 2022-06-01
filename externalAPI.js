@@ -197,6 +197,10 @@ module.exports = (router) => {
           .then((fullRes) => {
             showExistDriver(fullRes)
               .then((existSplit) => {
+                res.locals.ids = {
+                  ...existSplit.existing,
+                  ...existSplit.newShow,
+                };
                 return existSplit;
               })
               .then((idsToQuery) => {
@@ -208,9 +212,8 @@ module.exports = (router) => {
                   .then((rawDetails) => {
                     processTrend(rawDetails, idsToQuery.existing, true).then(
                       (processedTV) => {
-                        res
-                          .status(200)
-                          .send(...idsToQuery.existing, ...idsToQuery.newShow);
+                        res.status(200).send(res.locals.ids);
+                        console.log(processedTV);
                       }
                     );
                   })
