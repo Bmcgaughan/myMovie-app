@@ -186,7 +186,7 @@ async function getRecommended(id) {
 //route to get trending shows for the week and process
 module.exports = (router) => {
   router.get(
-    'movies/trending/week',
+    '/movies/trending/week',
     passport.authenticate('jwt', { session: false }),
     async (req, res) => {
       try {
