@@ -208,7 +208,9 @@ module.exports = (router) => {
                   .then((rawDetails) => {
                     processTrend(rawDetails, idsToQuery.existing, true).then(
                       (processedTV) => {
-                        res.status(200).send(processedTV);
+                        res
+                          .status(200)
+                          .send(...idsToQuery.existing, ...idsToQuery.newShow);
                       }
                     );
                   })
