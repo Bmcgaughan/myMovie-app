@@ -38,7 +38,7 @@ require('./passport');
 const Movies = Models.Movie;
 const Users = Models.User;
 
-// connect to local dev MongoDB
+//connect to local dev MongoDB
 // mongoose.connect('mongodb://localhost:27017/MyFlixApp', {
 //   useNewUrlParser: true,
 //   useUnifiedTopology: true,
@@ -67,6 +67,7 @@ app.use((err, req, res, next) => {
 
 //passing express app into Auth
 let auth = require('./auth')(app);
+let ext = require('./externalAPI')(app);
 
 //setting endpoints for API
 app.get('/', (req, res) => {
@@ -333,19 +334,6 @@ app.delete(
 
 app.get('/documentation', (req, res) => {
   res.sendFile(__dirname + '/public/documentation.html');
-});
-
-//asking external API for data if it is not stored. Request by title and returns json object
-app.get('/movies/trending', (req, res) => {
-  const title = req.params.title;
-  axios
-    .get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB}&append_to_response=week`)
-    .then((response) => {
-      res.json(response.data);
-    })
-    .catch((error) => {
-      res.status(500).send(`error: ${error}`);
-    });
 });
 
 const port = process.env.PORT || 8080;
