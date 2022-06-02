@@ -20,7 +20,7 @@ async function clearTrend() {
 
 //if show is found to exist it gets update to have Trending value
 async function updateExist(shows) {
-  console.log('existing ids', shows)
+  console.log('existing ids', shows);
   const promises = shows.map(
     async (shows) =>
       await Movies.findOneAndUpdate(
@@ -124,11 +124,11 @@ async function processTrend(data, existing, trend) {
     }
   }
 
-  await clearTrend().then((cleared) => {
-    console.log('cleared', cleared);
-  });
-
   if (existing) {
+    await clearTrend().then((cleared) => {
+      console.log('cleared', cleared);
+    });
+
     await updateExist(existing)
       .then((res) => {
         console.log('update Trend', res.length);
@@ -285,7 +285,13 @@ module.exports = (router) => {
       try {
         getRecommended(req.params.id)
           .then((response) => {
-            return response.data.results;
+            let topFive = response.data.results.slice(
+              0,
+              response.data.results.length > 5
+                ? 5
+                : response.data.results.length
+            );
+            return topFive;
           })
           .then((fullRes) => {
             showExistDriver(fullRes)
