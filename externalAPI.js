@@ -24,6 +24,7 @@ function clearTrend() {
 
 //if show is found to exist it gets update to have Trending value
 async function updateExist(shows) {
+  console.log('existing ids', shows)
   const promises = shows.map(
     async (shows) =>
       await Movies.findOneAndUpdate(
