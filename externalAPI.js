@@ -13,13 +13,9 @@ require('./passport');
 const Movies = Models.Movie;
 
 //clears Trending value for shows prior to updating with new results
-function clearTrend() {
-  Movies.updateMany({}, { $set: { Trending: false } }, (err, doc) => {
-    if (err) {
-      console.log('update failed');
-    }
-    console.log('cleared success', doc);
-  });
+
+async function clearTrend() {
+  return Movies.updateMany({}, { $set: { Trending: false } });
 }
 
 //if show is found to exist it gets update to have Trending value
@@ -126,6 +122,11 @@ async function processTrend(data, existing, trend) {
       showsToAdd.push(newTV);
     }
   }
+
+  await clearTrend().then((cleared) => {
+    console.log('cleared', cleared);
+  });
+
   if (existing) {
     await updateExist(existing)
       .then((res) => {
@@ -184,7 +185,7 @@ async function getRecommended(id) {
   return resp;
 }
 
-const trendJob = schedule.scheduleJob('0 */6 * * *', function () {
+const trendJob = schedule.scheduleJob('0 */2 * * *', function () {
   try {
     getTrending()
       .then((response) => {
@@ -198,7 +199,6 @@ const trendJob = schedule.scheduleJob('0 */6 * * *', function () {
           .then((idsToQuery) => {
             getDetails(idsToQuery.newShow)
               .then((newTVDetails) => {
-                clearTrend();
                 return newTVDetails;
               })
               .then((rawDetails) => {
@@ -221,7 +221,6 @@ const trendJob = schedule.scheduleJob('0 */6 * * *', function () {
       });
   } catch (err) {
     console.log('error:', err);
-    // res.status(500).send(`Error: ${err}`);
   }
 });
 
@@ -248,7 +247,6 @@ module.exports = (router) => {
               .then((idsToQuery) => {
                 getDetails(idsToQuery.newShow)
                   .then((newTVDetails) => {
-                    clearTrend();
                     return newTVDetails;
                   })
                   .then((rawDetails) => {
