@@ -296,9 +296,10 @@ module.exports = (router) => {
           .then((fullRes) => {
             showExistDriver(fullRes)
               .then((existSplit) => {
-                res
-                  .status(200)
-                  .send({ ...existSplit.existing, ...existSplit.newShow });
+                res.locals.exist = { ...existSplit.existing };
+                // res
+                //   .status(200)
+                //   .send({ ...existSplit.existing, ...existSplit.newShow });
                 return existSplit;
               })
               .then((idsToQuery) => {
@@ -308,6 +309,10 @@ module.exports = (router) => {
                   })
                   .then((rawDetails) => {
                     processTrend(rawDetails, null, null).then((processedTV) => {
+                      res.status(200).send({
+                        exist: res.locals.exist,
+                        processedTV,
+                      });
                       console.log(processedTV);
                     });
                   })
