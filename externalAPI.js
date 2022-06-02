@@ -43,7 +43,7 @@ async function updateExist(shows) {
 async function addShows(shows) {
   Movies.insertMany(shows)
     .then((result) => {
-      console.log('added', result);
+      console.log('added', result.length);
     })
     .catch((e) => {
       console.log('addShows Error:', e);
@@ -129,7 +129,7 @@ async function processTrend(data, existing, trend) {
   if (existing) {
     await updateExist(existing)
       .then((res) => {
-        console.log('update Trend', res);
+        console.log('update Trend', res.length);
       })
       .catch((e) => {
         console.log('Update Exist Error', e);
