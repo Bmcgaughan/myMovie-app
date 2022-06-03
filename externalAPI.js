@@ -211,7 +211,7 @@ const popularJob = schedule.scheduleJob('0 */4 * * *', function () {
               })
               .then((rawDetails) => {
                 processTrend(rawDetails, null, null).then((processedTV) => {
-                  console.log(processedTV);
+                  console.log('added', processedTV.length);
                 });
               })
               .catch((e) => {
@@ -249,7 +249,7 @@ const trendJob = schedule.scheduleJob('0 */2 * * *', function () {
               .then((rawDetails) => {
                 processTrend(rawDetails, idsToQuery.existing, true).then(
                   (processedTV) => {
-                    console.log(processedTV);
+                    console.log('added', processedTV.length);
                   }
                 );
               })
