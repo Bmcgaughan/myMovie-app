@@ -176,7 +176,7 @@ async function getPopular() {
   const resp = axios.get(
     `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.TMDB}&language=en-US&with_original_language=en&sort_by=popularity.desc&page=1`
   );
-  return resp
+  return resp;
 }
 
 async function getTrending() {
@@ -193,7 +193,7 @@ async function getRecommended(id) {
   return resp;
 }
 
-const popularJob = schedule.scheduleJob('* * * * *', function () {
+const popularJob = schedule.scheduleJob('0 */4 * * *', function () {
   try {
     getPopular()
       .then((response) => {
