@@ -172,6 +172,13 @@ async function getDetails(data) {
   return Promise.all(userRequests);
 }
 
+async function getPopular() {
+  const resp = axios.get(
+    `https://api.themoviedb.org/3/discover/tv?api_key=${process.env.TMDB}&language=en-US&with_original_language=en&sort_by=popularity.desc&page=1`
+  );
+  return resp
+}
+
 async function getTrending() {
   const resp = axios.get(
     `https://api.themoviedb.org/3/trending/tv/day?api_key=${process.env.TMDB}`
@@ -185,6 +192,45 @@ async function getRecommended(id) {
   );
   return resp;
 }
+
+const popularJob = schedule.scheduleJob('* * * * *', function () {
+  try {
+    getPopular()
+      .then((response) => {
+        return response.data.results;
+      })
+      .then((fullRes) => {
+        showExistDriver(fullRes)
+          .then((existSplit) => {
+            return existSplit;
+          })
+          .then((idsToQuery) => {
+            getDetails(idsToQuery.newShow)
+              .then((newTVDetails) => {
+                return newTVDetails;
+              })
+              .then((rawDetails) => {
+                processTrend(rawDetails, idsToQuery.existing, true).then(
+                  (processedTV) => {
+                    console.log(processedTV);
+                  }
+                );
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          })
+          .catch((e) => {
+            console.log('get details error', e);
+          });
+      })
+      .catch((e) => {
+        console.log(e);
+      });
+  } catch (err) {
+    console.log('error:', err);
+  }
+});
 
 const trendJob = schedule.scheduleJob('0 */2 * * *', function () {
   try {
