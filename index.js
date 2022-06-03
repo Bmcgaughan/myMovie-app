@@ -79,6 +79,7 @@ app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    console.log(req.user);
     Movies.find()
       .then((movies) => {
         res.status(201).json(movies);
