@@ -79,7 +79,6 @@ app.get(
   '/movies',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
-    console.log(req.user.Username);
     Movies.find()
       .then((movies) => {
         res.status(201).json(movies);
@@ -203,6 +202,11 @@ app.put(
   ],
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (req.user.Username != req.params.Username) {
+      return res.status(401).send('Not Authorized');
+    }
+    console.log(req.user.Username);
+
     let validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
@@ -242,6 +246,9 @@ app.get(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (req.user.Username != req.params.Username) {
+      return res.status(401).send('Not Authorized');
+    }
     Users.findOne({ Username: req.params.Username })
       .then((user) => {
         if (user) {
@@ -268,6 +275,9 @@ app.post(
   '/users/:Username/favorites/:MovieID',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (req.user.Username != req.params.Username) {
+      return res.status(401).send('Not Authorized');
+    }
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
@@ -293,6 +303,9 @@ app.delete(
   '/users/:Username/favorites/:MovieID',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (req.user.Username != req.params.Username) {
+      return res.status(401).send('Not Authorized');
+    }
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
@@ -318,6 +331,9 @@ app.delete(
   '/users/:Username',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    if (req.user.Username != req.params.Username) {
+      return res.status(401).send('Not Authorized');
+    }
     Users.findOneAndRemove({ Username: req.params.Username })
       .then((user) => {
         if (!user) {
