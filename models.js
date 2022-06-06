@@ -20,6 +20,7 @@ let movieSchema = mongoose.Schema({
   Popularity: Number,
   Trending: Boolean,
   odbID: Number,
+  Recommended: [Number],
 });
 
 let userSchema = mongoose.Schema({
