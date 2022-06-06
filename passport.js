@@ -15,7 +15,7 @@ passport.use(
       passwordField: 'Password',
     },
     (username, password, callback) => {
-      console.log(`${username} ${password}`);
+      console.log(`${username}`);
       Users.findOne({ Username: username }, (error, user) => {
         if (error) {
           console.log(error);
@@ -32,7 +32,6 @@ passport.use(
           return callback(null, false, {message : 'Incorrect Password'})
         }
 
-        console.log('finished');
         return callback(null, user);
       });
     }
