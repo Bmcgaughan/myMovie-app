@@ -340,7 +340,7 @@ module.exports = (router) => {
           .then((fullRes) => {
             showExistDriver(fullRes)
               .then((existSplit) => {
-                res.locals.exist = { ...existSplit.existing };
+                res.locals.exist = [...existSplit.existing ];
                 // res
                 //   .status(200)
                 //   .send({ ...existSplit.existing, ...existSplit.newShow });
