@@ -18,6 +18,7 @@ async function clearTrend() {
 }
 
 function populateRecommended(showID, ids) {
+  console.log(showID, ids);
   Movies.findOneAndUpdate(
     { odbID: showID },
     {
@@ -30,7 +31,7 @@ function populateRecommended(showID, ids) {
       if (err) {
         console.log(err);
       } else {
-        console.log('Recommended Updated', doc.length);
+        console.log('Recommended Updated', doc);
       }
     }
   );
