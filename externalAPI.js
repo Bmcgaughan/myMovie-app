@@ -38,15 +38,15 @@ async function updateExist(shows) {
 
 //function for adding array of shows to database
 async function addShows(shows) {
-  return Movies.insertMany(shows)
-  
-    // .then((result) => {
-    //   console.log('added', result.length);
-    //   return result;
-    // })
-    // .catch((e) => {
-    //   console.log('addShows Error:', e);
-    // });
+  return Movies.insertMany(shows);
+
+  // .then((result) => {
+  //   console.log('added', result.length);
+  //   return result;
+  // })
+  // .catch((e) => {
+  //   console.log('addShows Error:', e);
+  // });
 }
 
 //check to see if show exists prior to adding or processing
@@ -141,7 +141,6 @@ async function processTrend(data, existing, trend) {
   }
 
   let addedShows = await addShows(showsToAdd);
-  console.log('waiting add', addedShows);
   return addedShows;
 }
 
@@ -357,7 +356,7 @@ module.exports = (router) => {
                         exist: res.locals.exist,
                         processedTV,
                       });
-                      console.log(processedTV);
+                      console.log('added', processedTV.length);
                     });
                   })
                   .catch((e) => {
