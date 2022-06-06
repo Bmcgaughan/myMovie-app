@@ -41,6 +41,7 @@ async function addShows(shows) {
   Movies.insertMany(shows)
     .then((result) => {
       console.log('added', result.length);
+      return result;
     })
     .catch((e) => {
       console.log('addShows Error:', e);
@@ -138,8 +139,9 @@ async function processTrend(data, existing, trend) {
       });
   }
 
-  await addShows(showsToAdd);
-  return showsToAdd;
+  let addedShows = await addShows(showsToAdd);
+  console.log(addedShows);
+  return addedShows;
 }
 
 //serves as a map to generate promise for each show in initial results
@@ -331,8 +333,8 @@ module.exports = (router) => {
           .then((response) => {
             let topFive = response.data.results.slice(
               0,
-              response.data.results.length > 5
-                ? 5
+              response.data.results.length > 6
+                ? 6
                 : response.data.results.length
             );
             return topFive;
@@ -340,10 +342,7 @@ module.exports = (router) => {
           .then((fullRes) => {
             showExistDriver(fullRes)
               .then((existSplit) => {
-                res.locals.exist = [...existSplit.existing ];
-                // res
-                //   .status(200)
-                //   .send({ ...existSplit.existing, ...existSplit.newShow });
+                res.locals.exist = [...existSplit.existing];
                 return existSplit;
               })
               .then((idsToQuery) => {
