@@ -23,7 +23,7 @@ function populateRecommended(showID, ids) {
     { odbID: showID },
     {
       $set: {
-        Recommended: [...ids],
+        Recommended: ids,
       },
     },
     { new: true },
