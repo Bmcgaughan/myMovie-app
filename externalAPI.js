@@ -13,9 +13,27 @@ require('./passport');
 const Movies = Models.Movie;
 
 //clears Trending value for shows prior to updating with new results
-
 async function clearTrend() {
   return Movies.updateMany({}, { $set: { Trending: false } });
+}
+
+function populateRecommended(showID, ids) {
+  Movies.findOneAndUpdate(
+    { odbID: showID },
+    {
+      $set: {
+        Recommended: [...ids],
+      },
+    },
+    { new: true },
+    (err, doc) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Recommended Updated', doc.length);
+      }
+    }
+  );
 }
 
 //if show is found to exist it gets update to have Trending value
@@ -39,14 +57,6 @@ async function updateExist(shows) {
 //function for adding array of shows to database
 async function addShows(shows) {
   return Movies.insertMany(shows);
-
-  // .then((result) => {
-  //   console.log('added', result.length);
-  //   return result;
-  // })
-  // .catch((e) => {
-  //   console.log('addShows Error:', e);
-  // });
 }
 
 //check to see if show exists prior to adding or processing
@@ -195,6 +205,7 @@ async function getRecommended(id) {
   return resp;
 }
 
+//scheduled job to pull popular shows and add any new ones
 const popularJob = schedule.scheduleJob('0 */4 * * *', function () {
   try {
     getPopular()
@@ -232,6 +243,7 @@ const popularJob = schedule.scheduleJob('0 */4 * * *', function () {
   }
 });
 
+//scheduled job to update list of trending shows
 const trendJob = schedule.scheduleJob('0 */2 * * *', function () {
   try {
     getTrending()
@@ -324,6 +336,7 @@ module.exports = (router) => {
     }
   );
 
+  //route to look for recommended shows based on ID
   router.get(
     '/movies/recommended/:id',
     passport.authenticate('jwt', { session: false }),
@@ -331,18 +344,22 @@ module.exports = (router) => {
       try {
         getRecommended(req.params.id)
           .then((response) => {
-            let topFive = response.data.results.slice(
+            let topSix = response.data.results.slice(
               0,
               response.data.results.length > 6
                 ? 6
                 : response.data.results.length
             );
-            return topFive;
+            return topSix;
           })
           .then((fullRes) => {
             showExistDriver(fullRes)
               .then((existSplit) => {
                 res.locals.exist = [...existSplit.existing];
+                populateRecommended(req.params.id, [
+                  ...existSplit.existing,
+                  ...existSplit.newShow,
+                ]);
                 return existSplit;
               })
               .then((idsToQuery) => {
@@ -356,6 +373,7 @@ module.exports = (router) => {
                         exist: res.locals.exist,
                         processedTV,
                       });
+
                       console.log('added', processedTV.length);
                     });
                   })
