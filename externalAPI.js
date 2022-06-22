@@ -290,49 +290,11 @@ module.exports = (router) => {
     '/trending',
     passport.authenticate('jwt', { session: false }),
     async (req, res) => {
-      try {
-        getTrending()
-          .then((response) => {
-            return response.data.results;
-          })
-          .then((fullRes) => {
-            showExistDriver(fullRes)
-              .then((existSplit) => {
-                res.locals.ids = {
-                  ...existSplit.existing,
-                  ...existSplit.newShow,
-                };
-                return existSplit;
-              })
-              .then((idsToQuery) => {
-                getDetails(idsToQuery.newShow)
-                  .then((newTVDetails) => {
-                    return newTVDetails;
-                  })
-                  .then((rawDetails) => {
-                    processTrend(rawDetails, idsToQuery.existing, true).then(
-                      (processedTV) => {
-                        res.status(200).send(res.locals.ids);
-                        console.log(processedTV);
-                      }
-                    );
-                  })
-                  .catch((e) => {
-                    res.status(500).send(`Error: ${e}`);
-                  });
-              })
-              .catch((e) => {
-                console.log('get details error', e);
-                res.status(500).send(`Error: ${e}`);
-              });
-          })
-          .catch((e) => {
-            console.log(e);
-            res.status(500).send(`Error: ${e}`);
-          });
-      } catch (err) {
-        console.log('error:', err);
-        res.status(500).send(`Error: ${err}`);
+      let trending = await Movies.find({ Trending: true });
+      if (trending.length !== 0) {
+        res.status(201).json(trending);
+      } else {
+        res.status(404).json({ message: 'No Trending Shows' });
       }
     }
   );
