@@ -90,6 +90,17 @@ app.get(
   }
 );
 
+app.get(
+  '/foryou',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    let userFavorites = [];
+    Users.findOne({ Username: req.user.Username }).then((user) => {
+      userFavorites = user.FavoriteMovies;
+    });
+  }
+);
+
 //movie by title
 app.get(
   '/movies/:title',

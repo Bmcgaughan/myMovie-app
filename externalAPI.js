@@ -207,7 +207,7 @@ async function getRecommended(id) {
 }
 
 //scheduled job to pull popular shows and add any new ones
-const popularJob = schedule.scheduleJob('0 */4 * * *', function () {
+const popularJob = schedule.scheduleJob('0 */2 * * *', function () {
   try {
     getPopular()
       .then((response) => {
