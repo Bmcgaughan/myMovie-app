@@ -250,7 +250,6 @@ app.post(
       'Username cant contain non alpha-numeric characters'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email address is not valid').isEmail(),
   ],
   (req, res) => {
     let validationErrors = validationResult(req);
@@ -267,8 +266,6 @@ app.post(
         Users.create({
           Username: req.body.Username,
           Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
         })
           .then((user) => {
             res.status(201).json(user);
@@ -297,7 +294,6 @@ app.put(
       'Username cant contain non alpha-numeric characters'
     ).isAlphanumeric(),
     check('Password', 'Password is required').not().isEmpty(),
-    check('Email', 'Email address is not valid').isEmail(),
   ],
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
@@ -323,8 +319,6 @@ app.put(
         $set: {
           Username: req.body.Username,
           Password: hashedPassword,
-          Email: req.body.Email,
-          Birthday: req.body.Birthday,
         },
       },
       { new: true },
@@ -353,8 +347,6 @@ app.get(
         if (user) {
           respData = {
             Username: user.Username,
-            Email: user.Email,
-            Birthday: user.Birthday,
             FavoriteMovies: user.FavoriteMovies,
           };
           res.status(201).json(respData);
