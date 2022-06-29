@@ -102,11 +102,10 @@ async function processTrend(data, existing, trend) {
       newTV.ImagePath = baseURL + show.poster_path;
       newTV.Popularity = show.popularity ? show.popularity : null;
       newTV.Rating = show.vote_average ? show.vote_average : null;
-      newTV.Network = show.networks
-        ? show.networks[0]
-          ? show.newtworks[0].name
-          : null
-        : null;
+      if (show.networks && show.networks.length > 0) {
+        newTV.Network = show.networks[0].name ? show.networks[0].name : null;
+      }
+
       if (show.genres) {
         newTV.Genre.Name = show.genres[0] ? show.genres[0].name : '';
       }
