@@ -372,7 +372,7 @@ module.exports = (router) => {
     '/search/:query',
     passport.authenticate('jwt', { session: false }),
     (req, res) => {
-      const queryText = encodeURI(req.params.query);
+      const queryText = req.params.query;
       getSearch(queryText)
         .then((response) => {
           if (response.data.results.length === 0) {
