@@ -379,26 +379,40 @@ module.exports = (router) => {
             res.status(404).json({ message: 'No Results' });
           }
           const ids = response.data.results.map((result) => result.id);
-          console.log(ids);
+          ids = ids.slice(0, ids.length > 5 ? 5 : ids.length);
           return ids;
         })
-        .then((idsToQuery) => {
-          getDetails(idsToQuery)
-            .then((newTVDetails) => {
-              return newTVDetails;
+        .then((fullRes) => {
+          showExistDriver(fullRes)
+            .then((existSplit) => {
+              return existSplit;
             })
-            .then((rawDetails) => {
-              processTrend(rawDetails, null, null).then((processedTV) => {
-                res.status(200).send({
-                  processedTV,
-                });
+            .then((idsToQuery) => {
+              getDetails(idsToQuery.newShow)
+                .then((newTVDetails) => {
+                  return newTVDetails;
+                })
+                .then((rawDetails) => {
+                  processTrend(rawDetails, null, null).then((processedTV) => {
+                    res.status(200).send({
+                      processedTV,
+                    });
 
-                console.log('added', processedTV.length);
-              });
+                    console.log('added', processedTV.length);
+                  });
+                })
+                .catch((e) => {
+                  res.status(500).send(`Error: ${e}`);
+                });
             })
             .catch((e) => {
+              console.log('get details error', e);
               res.status(500).send(`Error: ${e}`);
             });
+        })
+        .catch((e) => {
+          console.log(e);
+          res.status(500).send(`Error: ${e}`);
         });
     }
   );
