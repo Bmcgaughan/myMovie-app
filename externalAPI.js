@@ -378,7 +378,7 @@ module.exports = (router) => {
           if (response.data.results.length === 0) {
             res.status(404).json({ message: 'No Results' });
           }
-          const ids = response.data.results.map((result) => result.id);
+          let ids = response.data.results.map((result) => result.id);
           ids = ids.slice(0, ids.length > 5 ? 5 : ids.length);
           return ids;
         })
