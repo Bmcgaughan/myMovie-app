@@ -201,6 +201,13 @@ async function getTrending() {
   return resp;
 }
 
+async function getSearch(query) {
+  const resp = axios.get(
+    `https://api.themoviedb.org/3/search/tv?api_key=${process.env.TMDB}&language=en-US&page=1&query=${query}&include_adult=false`
+  );
+  return resp;
+}
+
 async function getRecommended(id) {
   const resp = axios.get(
     `https://api.themoviedb.org/3/tv/${id}/recommendations?api_key=${process.env.TMDB}&language=en-US&page=1&append_to_response=credits`
@@ -359,6 +366,40 @@ module.exports = (router) => {
         console.log('error:', err);
         res.status(500).send(`Error: ${err}`);
       }
+    }
+  );
+  router.get(
+    '/search/:query',
+    passport.authenticate('jwt', { session: false }),
+    (req, res) => {
+      const queryText = encodeURI(req.params.query);
+      getSearch(queryText)
+        .then((response) => {
+          if (response.data.results.length === 0) {
+            res.status(404).json({ message: 'No Results' });
+          }
+          const ids = response.data.results.map((result) => result.id);
+          console.log(ids);
+          return ids;
+        })
+        .then((idsToQuery) => {
+          getDetails(idsToQuery)
+            .then((newTVDetails) => {
+              return newTVDetails;
+            })
+            .then((rawDetails) => {
+              processTrend(rawDetails, null, null).then((processedTV) => {
+                res.status(200).send({
+                  processedTV,
+                });
+
+                console.log('added', processedTV.length);
+              });
+            })
+            .catch((e) => {
+              res.status(500).send(`Error: ${e}`);
+            });
+        });
     }
   );
 };
