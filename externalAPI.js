@@ -99,7 +99,9 @@ async function processTrend(data, existing, trend) {
       newTV.Description = show.overview ? show.overview : 'N/A';
       newTV.odbID = show.id;
       newTV.Trending = trend ? true : false;
-      newTV.ImagePath = baseURL + show.poster_path;
+      newTV.ImagePath = show.poster_path
+        ? baseURL + show.poster_path
+        : 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg';
       newTV.Popularity = show.popularity ? show.popularity : null;
       newTV.Rating = show.vote_average ? show.vote_average : null;
       if (show.networks && show.networks.length > 0) {
