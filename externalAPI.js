@@ -382,13 +382,16 @@ module.exports = (router) => {
           if (response.data.results.length === 0) {
             res.status(404).json({ message: 'No Results' });
           }
+          console.log(response.data);
           let ids = response.data.results.map((result) => result.id);
           ids = ids.slice(0, ids.length > 5 ? 5 : ids.length);
+          console.log(ids);
           return ids;
         })
         .then((fullRes) => {
           showExistDriver(fullRes)
             .then((existSplit) => {
+              console.log(existSplit);
               return existSplit;
             })
             .then((idsToQuery) => {
