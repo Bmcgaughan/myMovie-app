@@ -176,9 +176,12 @@ async function getDetails(data) {
   if (data.length === 0) {
     return null;
   }
-  data = [...new Set(data)];
+  console.log(data);
+  //remove duplicates from data
+  let unique = [...new Set(data)];
+  console.log(unique);
   let userRequests = [];
-  data.forEach((id) => {
+  unique.forEach((id) => {
     userRequests.push(
       getData(
         `https://api.themoviedb.org/3/tv/${id}?api_key=${process.env.TMDB}&language=en-US&append_to_response=credits`
