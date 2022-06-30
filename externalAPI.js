@@ -176,6 +176,7 @@ async function getDetails(data) {
   if (data.length === 0) {
     return null;
   }
+  data = [...new Set(data)];
   let userRequests = [];
   data.forEach((id) => {
     userRequests.push(
