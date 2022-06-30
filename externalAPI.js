@@ -176,10 +176,8 @@ async function getDetails(data) {
   if (data.length === 0) {
     return null;
   }
-  console.log(data);
   //remove duplicates from data
   let unique = [...new Set(data)];
-  console.log(unique);
   let userRequests = [];
   unique.forEach((id) => {
     userRequests.push(
@@ -382,11 +380,11 @@ module.exports = (router) => {
           if (response.data.results.length === 0) {
             res.status(404).json({ message: 'No Results' });
           }
-          console.log(response.data);
-          let ids = response.data.results.map((result) => result.id);
-          ids = ids.slice(0, ids.length > 5 ? 5 : ids.length);
-          console.log(ids);
-          return ids;
+          let topFive = response.data.results.slice(
+            0,
+            response.data.results.length > 5 ? 5 : response.data.results.length
+          );
+          return topFive;
         })
         .then((fullRes) => {
           showExistDriver(fullRes)
