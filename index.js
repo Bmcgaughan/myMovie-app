@@ -31,6 +31,7 @@ app.use(
 );
 
 const passport = require('passport');
+const { ResultWithContext } = require('express-validator/src/chain');
 
 require('./passport');
 
@@ -300,6 +301,9 @@ app.put(
     if (req.user.Username != req.params.Username) {
       return res.status(401).send('Not Authorized');
     }
+    if (req.user.Username == 'DemoUser') {
+      return res.status(401).send('Demo User Cannot Be Updated');
+    }
     console.log(req.user.Username);
 
     let validationErrors = validationResult(req);
@@ -424,6 +428,9 @@ app.delete(
   (req, res) => {
     if (req.user.Username != req.params.Username) {
       return res.status(401).send('Not Authorized');
+    }
+    if (req.user.Username == 'DemoUser') {
+      return res.status(401).send('Demo User Cannot Be Deleted');
     }
     Users.findOneAndRemove({ Username: req.params.Username })
       .then((user) => {

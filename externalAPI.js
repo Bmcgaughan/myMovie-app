@@ -11,6 +11,7 @@ const jwt = require('jsonwebtoken'),
 require('./passport');
 
 const Movies = Models.Movie;
+const Users = Models.User;
 
 //clears Trending value for shows prior to updating with new results
 async function clearTrend() {
@@ -219,6 +220,37 @@ async function getRecommended(id) {
   );
   return resp;
 }
+
+//reset demoUsers favorites and account every 2 hours
+const resetDemoUser = schedule.scheduleJob('0 0 */2 * * *', async () => {
+  const demoFavorites = [
+    '62bc652d3f56a65ddfb85aa3',
+    '62b126203ade5e96e1bf5e0e',
+    '62bc652d3f56a65ddfb85aa2',
+    '6296c9ba15e8edf4ce18c16f',
+    '6296c9ba15e8edf4ce18c169',
+    '629e281242da85b7045d6abc',
+    '62bd9a20cd47cb9ef4978686',
+    '62d54b4091dc3583089a2ae2',
+  ];
+
+  Users.findOneAndUpdate(
+    { Username: 'DemoUser' },
+    {
+      $set: {
+        FavoriteMovies: demoFavorites,
+      },
+    },
+    { new: true },
+    (err, updatedUser) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Demo User Reset', updatedUser);
+      }
+    }
+  );
+});
 
 //scheduled job to pull popular shows and add any new ones
 const popularJob = schedule.scheduleJob('0 */2 * * *', function () {
