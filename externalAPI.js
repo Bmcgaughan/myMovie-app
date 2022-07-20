@@ -222,7 +222,7 @@ async function getRecommended(id) {
 }
 
 //reset demoUsers favorites and account every 2 hours
-const resetDemoUser = schedule.scheduleJob('0 0 */2 * * *', async () => {
+const resetDemoUser = schedule.scheduleJob('0 */2 * * *', async () => {
   const demoFavorites = [
     '62bc652d3f56a65ddfb85aa3',
     '62b126203ade5e96e1bf5e0e',
