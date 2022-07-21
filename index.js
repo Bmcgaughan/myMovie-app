@@ -142,15 +142,11 @@ app.get(
     
    
     let uniquReturn = returnMovies.reduce((unique, o) => {
-      if (!unique.some((obj) => obj._id === o._id)) {
+      if (!unique.some((obj) => obj.odbID === o.odbID)) {
         unique.push(o);
       }
       return unique;
     }, []);
-
-    uniquReturn.forEach((movie) => {
-      console.log(movie.Title)
-    })
 
     if (uniquReturn.length > 0) {
       uniquReturn.sort((a, b) => b.Rating - a.Rating);
