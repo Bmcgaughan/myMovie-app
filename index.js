@@ -103,9 +103,10 @@ async function findOtherLikes(favorites, user) {
       otherLikes.push(...user.FavoriteMovies);
     });
   }
-  otherLikes = [...new Set(otherLikes)];
+  //deduplicate otherLikes
+  let uniqueLikes = [...new Set(otherLikes)];
   let movieList = await Movies.find({
-    _id: { $in: otherLikes },
+    _id: { $in: uniqueLikes },
   });
   return movieList.length > 0 ? movieList : [];
 }
