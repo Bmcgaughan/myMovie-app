@@ -139,14 +139,19 @@ app.get(
     let otherUserFavorites = await findOtherLikes(favorites, req.user.Username);
     let recos = await favoriteRecommend(favorites);
     let returnMovies = [...recos, ...otherUserFavorites];
-    console.log(returnMovies, recos);
+    
+   
     let uniquReturn = returnMovies.reduce((unique, o) => {
       if (!unique.some((obj) => obj._id === o._id)) {
         unique.push(o);
       }
       return unique;
     }, []);
-    console.log(uniquReturn)
+
+    uniquReturn.forEach((movie) => {
+      console.log(movie.Title)
+    })
+
     if (uniquReturn.length > 0) {
       uniquReturn.sort((a, b) => b.Rating - a.Rating);
       res
