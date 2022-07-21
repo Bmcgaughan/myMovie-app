@@ -139,21 +139,19 @@ app.get(
     let otherUserFavorites = await findOtherLikes(favorites, req.user.Username);
     let recos = await favoriteRecommend(favorites);
     let returnMovies = [...recos, ...otherUserFavorites];
-
-    returnMovies = returnMovies.reduce((unique, o) => {
+    console.log(returnMovies, recos);
+    let uniquReturn = returnMovies.reduce((unique, o) => {
       if (!unique.some((obj) => obj._id === o._id)) {
         unique.push(o);
       }
       return unique;
     }, []);
-
-    if (returnMovies.length > 0) {
-      returnMovies.sort((a, b) => b.Rating - a.Rating);
+    console.log(uniquReturn)
+    if (uniquReturn.length > 0) {
+      uniquReturn.sort((a, b) => b.Rating - a.Rating);
       res
         .status(201)
-        .json(
-          returnMovies.length > 20 ? returnMovies.slice(0, 20) : returnMovies
-        );
+        .json(uniquReturn.length > 20 ? uniquReturn.slice(0, 20) : uniquReturn);
     } else {
       res.status(404).send('No movies found');
     }
