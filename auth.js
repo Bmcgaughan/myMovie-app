@@ -5,6 +5,12 @@ require('./passport');
 
 const jwtSecret = process.env.JWT;
 
+/**
+ * generates JWT token
+ * @param {*} user 
+ * 
+ */
+
 let generateJWTToken = (user) => {
   return jwt.sign(user, jwtSecret, {
     subject: user.Username,
